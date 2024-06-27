@@ -1,0 +1,5 @@
+
+resource_group_name   = "rg-ktea-terraform-state"
+storage_account_name  = "sakteaterraformstate"
+container_name        = "ktea-tfstate"
+key                   = "ktea-prd-tfstate"
