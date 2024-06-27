@@ -54,9 +54,12 @@ This repo includes a version of craft from [tbd]()
     docker push [CONTAINER-REGISTRY-NAME].azurecr.io/craftcms:latest
     ```
 
-Process to create new Azure container app Environment
----
-<br />
+## Create Azure Resources
+
+Use this process to provision the required Azure resources including App Service, MySQL, Container Registry and Storage
+
+Terraform state is stored in an Azure Storage account for backend state storage. This account will need to be manually created and details configured in backend configuration
+
 
 - For [`Terraform`]([link-url](https://www.terraform.io/)) the sakteaterraformstate storage account will need to have the IP address added to the firewall when running Terraform commands. 
 
