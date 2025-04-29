@@ -1,9 +1,10 @@
 # craftcms-appservice
 
-This repository contains two distict sections of code in directories Terraform and Docker. 
-<br />
+This repository demonstrates building and deploying Craft CMS to Azure App Service.
+
+The repository contains two distinct sections of code in directories: Terraform and Docker. 
+
 ### Terraform
-<br />
 
 The Terraform directory container the Infrastructure as Code (IaC) Terraform files to build the Azure resource infrastructure for the CraftCMS Docker image to run in. This code uses the [Azurerm Provider](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs) to create Azure resources. 
 
@@ -19,14 +20,13 @@ In technical terms, it’s a self-hosted PHP application backed by a MySQL or Po
 The CraftCMS source code can be found here [`craftcms/cms`](https://github.com/craftcms/cms). This repository uses a sample project for its installation which can be found here for further updates [`craftcms/craft`](https://github.com/craftcms/craft/blob/5.x).  
 
 # Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
 
+## Provision Azure resources
 
 ## Build Docker image and push to Azure container registry
+
+This repo includes a version of craft from [tbd]()
+
 
 1. Build the docker image with Docker file
 
@@ -54,9 +54,12 @@ TODO: Guide users through getting your code up and running on their own system. 
     docker push [CONTAINER-REGISTRY-NAME].azurecr.io/craftcms:latest
     ```
 
-Process to create new Azure container app Environment
----
-<br />
+## Create Azure Resources
+
+Use this process to provision the required Azure resources including App Service, MySQL, Container Registry and Storage
+
+Terraform state is stored in an Azure Storage account for backend state storage. This account will need to be manually created and details configured in backend configuration
+
 
 - For [`Terraform`]([link-url](https://www.terraform.io/)) the sakteaterraformstate storage account will need to have the IP address added to the firewall when running Terraform commands. 
 
@@ -87,7 +90,7 @@ terraform plan -out 'plan.tfplan' -var-file='.backend/stage.tfvars' -destroy
 terraform apply 'plan.tfplan'
 ```
 
-<br />
+## Note
 
 - Need to manually configure logging for each environment with diagnostic settings etc. 
 
@@ -96,7 +99,6 @@ terraform apply 'plan.tfplan'
 	* Do an import using the dump file on the new environment craftcms database
 		- If the database was named different than the database used for the export you will need to edit the dump file and change the exported database name references to the import database name 
 	
-
 - Copy the container image tag from one environment to another or build and deploy a new one the the new environment
 
 - Update Docker credentials for the web app environment variables for the new environment 
