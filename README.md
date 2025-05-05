@@ -65,46 +65,49 @@ Terraform state is stored in an Azure Storage account for backend state storage.
 
 ### Run Terraform Init, Plan and Apply  
 
+The same terrafrom script is used to provision dev, stage and prod environments. The environment is determined by passing in the appropriate set of values via a terraform variables configurat or ".tfvars" file
+
+Note that each environment is considered different so a different "backend" state file is maintained for each environment and is determed by the ```-backend-config``` parameter
+
+Each environment has distinct values for service name and potentially other settings. These are determined by the tfvars file.
+
 #### Terraform INIT
+
 ```
 terraform init -reconfigure -backend-config='.backend/dev.azurerm.tfbackend' -var-file='.backend/dev.tfvars'<br />
-terraform init -reconfigure -backend-config='.backend/stage.azurerm.tfbackend' -var-file='.backend/stage.tfvars'<br />
-terraform init -reconfigure -backend-config='.backend/prod.azurerm.tfbackend' -var-file='.backend/prod.tfvars'<br />
 ```
 
 #### Terraform PLAN
+Generate a resource plan using the ```plan``` command
 ```
 terraform plan -out 'plan.tfplan' -var-file='.backend/dev.tfvars'<br />
-terraform plan -out 'plan.tfplan' -var-file='.backend/stage.tfvars'<br />
-terraform plan -out 'plan.tfplan' -var-file='.backend/prod.tfvars'<br />
 ```
 
 #### Terraform APPLY
+Apply a generated plan using the ```apply``` command
+
 ```
 terraform apply 'plan.tfplan'
 ```
 
 #### Terraform DESTROY
+To remove all resources that were created by the apply, use the ```-destroy``` option on the plan
+
 ```
 terraform plan -out 'plan.tfplan' -var-file='.backend/stage.tfvars' -destroy
 terraform apply 'plan.tfplan'
 ```
 
-## Note
+## Notes
 
-- Need to manually configure logging for each environment with diagnostic settings etc. 
-
-- Need to configure the CraftCMS database 
+- Logging is currently manually configured for each environment with diagnostic settings etc. 
+- A CraftCMS database needs to be initialized:
 	* Do a MySQL Workbench or command line dump export of the craftcms database
 	* Do an import using the dump file on the new environment craftcms database
 		- If the database was named different than the database used for the export you will need to edit the dump file and change the exported database name references to the import database name 
-	
 - Copy the container image tag from one environment to another or build and deploy a new one the the new environment
-
 - Update Docker credentials for the web app environment variables for the new environment 
-
 - Update settings in CraftCMS that contain references to the copied environment such as file system paths for assets 
-
 - Create assets folder on the storage account files container 
 
 
